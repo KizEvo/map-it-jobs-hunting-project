@@ -1,13 +1,21 @@
-import Job from '../../models/Job.js'
+import checkForJobsInDb from './checkForExistingJobsInDB.js'
 
 const getAllJobsInfo = async (jobUrls, browser) => {
   const jobInfoData = []
   for (let i = 0; i < jobUrls.length; i++) {
     const singleJobInfo = await singleJobPromise(jobUrls[i], browser)
+
+    const [isJobInDb, message] = await checkForJobsInDb(singleJobInfo)
+    if (isJobInDb) {
+      const resp = message || 'Job already in database, stop scraping...'
+      console.log(resp)
+      return [jobInfoData, true]
+    }
+
     jobInfoData.push(singleJobInfo)
     console.log(`Finished scraping the ${i + 1} page`)
   }
-  return jobInfoData
+  return [jobInfoData, false]
 }
 
 const singleJobPromise = async (url, browser) => {
@@ -51,7 +59,7 @@ const singleJobPromise = async (url, browser) => {
   )
   const result = JSON.parse(jsonString)
 
-  jobInfo.title = result.title
+  jobInfo.title = result.title.trim()
 
   const expireDate = result.validThrough.split('-').map((date) => Number(date))
   jobInfo.expireAt = new Date(

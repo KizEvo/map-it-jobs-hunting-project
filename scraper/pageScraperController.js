@@ -5,7 +5,7 @@ const pageScraperController = async (browser) => {
   const jobStack = []
   try {
     console.log('Opening page...')
-    let page = await browser.newPage()
+    const page = await browser.newPage()
 
     await page.setUserAgent(
       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'
@@ -21,14 +21,21 @@ const pageScraperController = async (browser) => {
     // )
 
     for (let i = 0; i < 2; i++) {
+      if (i !== 0) {
+        console.log('Navigating to new pagination...')
+        const urlToNextPage = await page.$eval(
+          '.pagination > li:last-child > a',
+          (element) => element.href
+        )
+        await page.goto(urlToNextPage)
+      }
+
       const jobUrls = await scrapeJobUrls(page)
-      const jobData = await getAllJobsInfo(jobUrls, browser)
+      const [jobData, isJobInDb] = await getAllJobsInfo(jobUrls, browser)
 
       jobStack.push(jobData)
 
-      console.log('Navigating to new pagination...')
-      // ? Navigation but can't use Promise.all with page.waitForNavigation ?
-      await page.click('.pagination > li:last-child > a')
+      if (isJobInDb) break
     }
   } catch (error) {
     console.log(error.message)

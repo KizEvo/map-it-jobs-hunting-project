@@ -10,6 +10,8 @@ import errorHandlerMiddleware from './middlewares/errors-handler.js'
 
 import scraperRouter from './routes/scraperRoutes.js'
 
+import './cron/runCron.js'
+
 const app = express()
 
 app.get('/', (req, res) => {

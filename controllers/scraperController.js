@@ -3,6 +3,10 @@ import startBrowser from '../scraper/browser.js'
 import startPageScrape from '../scraper/startPageScrape.js'
 
 const scrapeJobs = async (req, res) => {
+  res.status(200).json('scrape job')
+}
+
+const runCron = async () => {
   const browserInstance = await startBrowser()
   const data = await startPageScrape(browserInstance)
 
@@ -11,8 +15,6 @@ const scrapeJobs = async (req, res) => {
   for (let i = 0; i < data.length; i++) {
     await Job.create(data[i])
   }
-
-  res.status(200).json('scrape job')
 }
 
-export default scrapeJobs
+export { scrapeJobs, runCron }
