@@ -18,6 +18,10 @@ const JobSchema = new Schema(
       type: String,
       required: true,
     },
+    companyWebsite: {
+      type: String,
+      required: true,
+    },
     location: {
       type: String,
       required: true,

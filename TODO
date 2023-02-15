@@ -5,5 +5,5 @@
 # - Implement auto scraping using node-cron packages
 
 - Error-handling in pageScraperController
-  - If no new item added to stack
+  # - If no new item added to stack
   - If error thrown when getting single job detail

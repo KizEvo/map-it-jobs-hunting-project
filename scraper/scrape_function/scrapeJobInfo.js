@@ -5,15 +5,15 @@ const getAllJobsInfo = async (jobUrls, browser) => {
   for (let i = 0; i < jobUrls.length; i++) {
     const singleJobInfo = await singleJobPromise(jobUrls[i], browser)
 
-    const [isJobInDb, message] = await checkForJobsInDb(singleJobInfo)
+    const [isJobInDb, errorMessage] = await checkForJobsInDb(singleJobInfo)
     if (isJobInDb) {
-      const resp = message || 'Job already in database, stop scraping...'
-      console.log(resp)
+      const message = errorMessage || 'Job already in database, stop scraping'
+      console.log(message)
       return [jobInfoData, true]
     }
 
     jobInfoData.push(singleJobInfo)
-    console.log(`Finished scraping the ${i + 1} page`)
+    console.log(`Finished scraping the ${i + 1} job`)
   }
   return [jobInfoData, false]
 }
@@ -37,8 +37,11 @@ const singleJobPromise = async (url, browser) => {
     (element) => element.textContent
   )
   jobInfo.companyLocation = await newPage.$eval(
-    '.employer-long-overview__basic-info > div:nth-child(5) > div',
-    (element) => element.textContent.replace(/\n/g, '')
+    '.employer-long-overview__basic-info > svg',
+    (element) => {
+      const companyLocationElement = element.nextElementSibling.children[1]
+      return companyLocationElement.textContent.replace(/\n/g, '')
+    }
   )
   jobInfo.location = await newPage.$eval(
     '.job-details__overview > div:nth-child(3) > div > span',
@@ -74,6 +77,24 @@ const singleJobPromise = async (url, browser) => {
     createDate[1] - 1,
     createDate[2] + 1
   )
+
+  const jobCompanyPage = await newPage.$eval(
+    '.employer-long-overview__jobs > a',
+    (element) => element.href
+  )
+  await newPage.goto(jobCompanyPage)
+
+  try {
+    const webUrl = await newPage.$eval(
+      '.company-content > div > ul > div > li:last-child > div',
+      (element) => {
+        return element.getAttribute('data-redirect-url-url-value')
+      }
+    )
+    jobInfo.companyWebsite = webUrl
+  } catch (error) {
+    jobInfo.companyWebsite = 'Unknown'
+  }
 
   await newPage.close()
 

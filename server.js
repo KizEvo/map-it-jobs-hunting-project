@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use('/api/v1', scraperRouter)
+app.use('/api/v1/jobs', scraperRouter)
 
 app.use(routesNotFoundMiddleware)
 app.use(errorHandlerMiddleware)

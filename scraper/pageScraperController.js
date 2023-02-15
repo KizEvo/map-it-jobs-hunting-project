@@ -4,7 +4,7 @@ import scrapeJobUrls from './scrape_function/scrapeJobUrls.js'
 const pageScraperController = async (browser) => {
   const jobStack = []
   try {
-    console.log('Opening page...')
+    console.log('Opening browser...')
     const page = await browser.newPage()
 
     await page.setUserAgent(
@@ -13,14 +13,14 @@ const pageScraperController = async (browser) => {
 
     await page.goto(process.env.URL_TO_SCRAPE)
 
-    // await page.waitForSelector('.pagination')
+    await page.waitForSelector('.pagination')
 
-    // const paginationNumber = await page.$eval(
-    //   '.search-page__jobs-pagination > ul > li:nth-child(4) > a',
-    //   (element) => element.textContent
-    // )
+    const paginationNumber = await page.$eval(
+      '.search-page__jobs-pagination > ul > li:nth-child(4) > a',
+      (element) => element.textContent
+    )
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < paginationNumber; i++) {
       if (i !== 0) {
         console.log('Navigating to new pagination...')
         const urlToNextPage = await page.$eval(

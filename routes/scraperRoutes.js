@@ -1,8 +1,8 @@
 import express from 'express'
 const router = express.Router()
 
-import { scrapeJobs } from '../controllers/scraperController.js'
+import { getAllJob } from '../controllers/jobController.js'
 
-router.get('/scrapeJobs', scrapeJobs)
+router.get('/', getAllJob)
 
 export default router
