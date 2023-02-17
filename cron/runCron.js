@@ -1,7 +1,7 @@
 import cron from 'node-cron'
 import { runCron } from '../controllers/jobController.js'
 
-cron.schedule('0 */20 * * * *', () => {
+cron.schedule('0 */25 * * * *', () => {
   console.log('Running cron')
   runCron()
 })

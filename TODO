@@ -7,3 +7,8 @@
 - Error-handling in pageScraperController
   # - If no new item added to stack
   - If error thrown when getting single job detail
+
+- Make a simple UI with Google Map API (React)
+
+- Enable Billing for Google Map API when deploying for production
+  - https://developers.google.com/maps/documentation/javascript/cloud-setup#console
