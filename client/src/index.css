@@ -18,19 +18,9 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.svg-theme-color {
-  filter: invert(36%) sepia(84%) saturate(1010%) hue-rotate(118deg)
-    brightness(103%) contrast(102%);
-}
-
-.svg-theme-color-white {
-  filter: invert(100%) sepia(94%) saturate(0%) hue-rotate(329deg)
-    brightness(108%) contrast(108%);
-}
-
 @layer components {
   .dark {
-    @apply bg-gray-custom;
+    @apply bg-gray-theme;
   }
 
   .theme__box-ui-text {
@@ -39,5 +29,37 @@
 
   .btn-primary {
     @apply p-2 rounded-md hover:bg-green-primary-dark bg-green-primary text-white drop-shadow-lg;
+  }
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    background: #e7ffc9;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #00ab55;
+    border-radius: 100vh;
+    border: 3px solid;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #007b55;
+  }
+
+  .svg-theme-color {
+    filter: invert(36%) sepia(84%) saturate(1010%) hue-rotate(118deg)
+      brightness(103%) contrast(102%);
+  }
+
+  .svg-theme-color-white {
+    filter: invert(100%) sepia(94%) saturate(0%) hue-rotate(329deg)
+      brightness(108%) contrast(108%);
   }
 }

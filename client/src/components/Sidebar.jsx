@@ -25,12 +25,12 @@ const Sidebar = (props) => {
 
   return (
     <aside
-      className={`fixed w-full sm:w-96 z-10 top-0  h-screen border-y-0 border-l-0 border dark:border-slate-800 border-slate-300 dark:bg-gray-900 bg-white transition-left ease-in-out delay-150 ${
+      className={`fixed w-full sm:w-custom-sidebar z-10 top-0 h-screen border-y-0 border-l-0 border dark:border-slate-800 border-slate-300 dark:bg-gray-900 bg-white transition-left ease-in-out delay-150 ${
         props.showSidebar ? 'left-0' : '-left-full'
       }`}
     >
-      <div className='container flex flex-col gap-8 p-5'>
-        <section className='flex flex-col justify-between gap-10'>
+      <div className='container flex flex-col p-5 h-full'>
+        <section className='flex flex-grow-0 flex-col justify-between gap-8'>
           <button onClick={props.sidebarHandler} className='self-end'>
             <img
               src='/ic_remove.svg'
@@ -44,7 +44,7 @@ const Sidebar = (props) => {
             </h1>
           </div>
           {showAlert && <Alert />}
-          <form className='flex flex-col gap-10' onSubmit={formHandler}>
+          <form className='flex flex-col gap-8' onSubmit={formHandler}>
             <input
               ref={inputRef}
               className='theme__box-ui-text w-full placeholder:italic placeholder:font-light placeholder:text-slate-400 rounded-md py-2 px-4 hover:ring-1 ring-slate-300
@@ -56,7 +56,7 @@ const Sidebar = (props) => {
             <button className='btn-primary'>Search</button>
           </form>
         </section>
-        <section>
+        <section className='flex flex-col h-full justify-end gap-2'>
           <h1 className='font-bold text-2xl dark:text-white text-black mb-2'>
             Jobs Details
           </h1>

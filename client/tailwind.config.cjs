@@ -8,13 +8,17 @@ module.exports = {
         'green-primary-dark': '#007b55',
         'green-success': '#36b37e',
         'red-error': '#ff5630',
-        'gray-custom': '#161c24',
+        'gray-theme': '#161c24',
+        'dark-paper': '#212b36',
       },
       transitionProperty: {
         left: 'left',
       },
       height: {
         'custom-jobs-details': '30rem',
+      },
+      width: {
+        'custom-sidebar': '30rem',
       },
     },
   },
