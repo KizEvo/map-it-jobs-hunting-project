@@ -20,7 +20,12 @@ const pageScraperController = async (browser) => {
       (element) => element.textContent
     )
 
-    for (let i = 0; i < paginationNumber; i++) {
+    // const jobUrls = await scrapeJobUrls(page)
+    // const test = [jobUrls[0]]
+    // const [jobData, isJobInDb] = await getAllJobsInfo(test, browser)
+    // console.log(jobData)
+
+    for (let i = 0; i < 1; i++) {
       if (i !== 0) {
         console.log('Navigating to new pagination...')
         const urlToNextPage = await page.$eval(

@@ -1,21 +1,19 @@
-import checkForJobsInDb from './checkForExistingJobsInDB.js'
+import { jobValidate } from './jobValidate.js'
 
 const getAllJobsInfo = async (jobUrls, browser) => {
   const jobInfoData = []
-  for (let i = 0; i < jobUrls.length; i++) {
-    const singleJobInfo = await singleJobPromise(jobUrls[i], browser)
+  try {
+    for (let i = 0; i < jobUrls.length; i++) {
+      const singleJobInfo = await singleJobPromise(jobUrls[i], browser)
 
-    const [isJobInDb, errorMessage] = await checkForJobsInDb(singleJobInfo)
-    if (isJobInDb) {
-      const message = errorMessage || 'Job already in database, stop scraping'
-      console.log(message)
-      return [jobInfoData, true]
+      jobInfoData.push(singleJobInfo)
+      console.log(`Finished scraping the ${i + 1} job`)
     }
-
-    jobInfoData.push(singleJobInfo)
-    console.log(`Finished scraping the ${i + 1} job`)
+    return [jobInfoData, false]
+  } catch (error) {
+    console.log(error.message)
+    return [jobInfoData, true]
   }
-  return [jobInfoData, false]
 }
 
 const singleJobPromise = async (url, browser) => {
@@ -32,9 +30,10 @@ const singleJobPromise = async (url, browser) => {
   jobInfo.company = await newPage.$eval('.job-details__sub-title', (element) =>
     element.textContent.replace(/\n/g, '')
   )
+
   jobInfo.companyBusiness = await newPage.$eval(
     '.employer-long-overview__basic-info > div:nth-child(1) > div',
-    (element) => element.textContent
+    (element) => element.textContent.toLowerCase()
   )
   jobInfo.companyLocation = await newPage.$eval(
     '.employer-long-overview__basic-info > svg',
@@ -93,13 +92,24 @@ const singleJobPromise = async (url, browser) => {
     )
     jobInfo.companyWebsite = webUrl
   } catch (error) {
-    jobInfo.companyWebsite = 'Unknown'
+    jobInfo.companyWebsite = 'unknown'
   }
+
+  jobInfo.companyLogo = await newPage.$eval(
+    '.headers__logo__img > picture > img',
+    (imgElement) => imgElement.src
+  )
+
+  const [jobInfoModified, errorMessage] = await jobValidate(jobInfo)
 
   await newPage.close()
 
   return new Promise((resolve, reject) => {
-    resolve(jobInfo)
+    if (!jobInfoModified) {
+      reject({ message: errorMessage })
+    } else {
+      resolve(jobInfoModified)
+    }
   })
 }
 

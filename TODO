@@ -6,17 +6,27 @@
 
 # - Implement auto scraping using node-cron packages
 
-- Error-handling in pageScraperController
+# - Error-handling in pageScraperController
 
-  # - If no new item added to stack
+# - If no new item added to stack
 
-  - If error thrown when getting single job detail
+# - If error thrown when getting single job detail
 
-- Make a simple UI with Google Map API (React)
+# - Make a simple UI with Google Map API (React)
 
-  # - Make a sidebar for PC and mobile
+# - Make a sidebar for PC and mobile
 
-  - Make a simple card for jobs when searching for jobs
+# - Store image on Cloudinary
+
+# - Update jobValidate to put company name instead of the scraped picture name e.g picture.png to company.png
+
+# - Upload image inside jobValidate
+
+# - Assign the returned link to companyLogo property and save to database
+
+- Test Error-handling while scraping company logo image in scrape_function.
+
+- Make a simple card for jobs when searching for jobs
 
 - Enable Billing for Google Map API when deploying for production
   - https://developers.google.com/maps/documentation/javascript/cloud-setup#console
