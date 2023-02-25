@@ -5,10 +5,12 @@ const AppContext = createContext({
   darkMode: false,
   showSidebar: false,
   showAlert: false,
+  showJobSearchForm: true,
   alertType: '',
   alertText: '',
   jobs: [],
   toggleDarkMode: () => {},
+  toggleJobSearchForm: () => {},
   fetchJobs: async () => {},
   displayAlert: () => {},
 })

@@ -1,27 +1,9 @@
-import { useRef } from 'react'
 import { useAppContext } from '../hooks/useAppContext'
-import Alert from './Alert'
+import JobSearchForm from './JobSearchForm'
 import JobsContainer from './JobsContainer'
 
 const Sidebar = (props) => {
-  const { fetchJobs, displayAlert, showAlert } = useAppContext()
-  const inputRef = useRef()
-
-  const formHandler = (e) => {
-    e.preventDefault()
-    const jobInput = inputRef.current.value
-    if (jobInput.trim() === '') {
-      displayAlert('Input text must not be empty', 'danger')
-      return
-    }
-
-    if (jobInput.length > 150) {
-      displayAlert('Input text must not exceed 150 words', 'danger')
-      return
-    }
-
-    fetchJobs()
-  }
+  const { jobs, showJobSearchForm } = useAppContext()
 
   return (
     <aside
@@ -43,25 +25,17 @@ const Sidebar = (props) => {
               J
             </h1>
           </div>
-          {showAlert && <Alert />}
-          <form className='flex flex-col gap-8' onSubmit={formHandler}>
-            <input
-              ref={inputRef}
-              className='theme__box-ui-text w-full placeholder:italic placeholder:font-light placeholder:text-slate-400 rounded-md py-2 px-4 hover:ring-1 ring-slate-300
-            dark:hover:ring-0 focus:outline-none sm:text-sm dark:hover:bg-slate-700'
-              placeholder='Enter a job keyword...'
-              type='text'
-              name='search'
-            />
-            <button className='btn-primary'>Search</button>
-          </form>
+          {showJobSearchForm && <JobSearchForm />}
         </section>
-        <section className='flex flex-col h-full justify-end gap-2'>
-          <h1 className='font-bold text-2xl dark:text-white text-black mb-2'>
-            Jobs Details
-          </h1>
-          <JobsContainer />
-        </section>
+        {jobs.length > 0 ||
+          (showJobSearchForm && (
+            <section className='flex flex-col h-full justify-end gap-2'>
+              <h1 className='font-bold text-2xl dark:text-white text-black mb-2'>
+                Jobs Details
+              </h1>
+              <JobsContainer />
+            </section>
+          ))}
       </div>
     </aside>
   )

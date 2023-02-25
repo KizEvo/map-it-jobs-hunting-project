@@ -5,13 +5,16 @@ import startPageScrape from '../scraper/startPageScrape.js'
 const getAllJob = async (req, res) => {
   const { title, location, datePosted, companyBusiness } = req.query
 
+  if (!title || title.trim() === '')
+    throw new Error('Please provide a job title or keyword')
+
   const filterJobsObject = {}
 
   if (title) filterJobsObject.title = { $regex: title, $options: 'i' }
 
   if (location) filterJobsObject.location = { $regex: location, $options: 'i' }
 
-  if (companyBusiness === 'Outsourcing' || companyBusiness === 'Product')
+  if (companyBusiness === 'outsourcing' || companyBusiness === 'product')
     filterJobsObject.companyBusiness = companyBusiness
 
   let result = Job.find(filterJobsObject)

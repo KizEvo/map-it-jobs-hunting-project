@@ -3,6 +3,9 @@ import dotenv from 'dotenv'
 dotenv.config()
 import 'express-async-errors'
 
+const app = express()
+app.use(express.json())
+
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import path from 'path'
@@ -23,13 +26,9 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUD_API_SECRET,
 })
 
-const app = express()
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-
-app.use(express.json())
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 // app.use(express.static(path.resolve(__dirname, './public')))

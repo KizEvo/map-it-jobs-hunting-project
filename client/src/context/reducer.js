@@ -5,11 +5,15 @@ import {
   FETCH_JOBS_ERROR,
   FETCH_JOBS_SUCCESS,
   TOGGLE_DARK_MODE,
+  TOGGLE_JOB_SEARCH_FORM,
 } from './action'
 
 const reducer = (state, action) => {
   if (action.type === TOGGLE_DARK_MODE) {
     return { ...state, darkMode: !state.darkMode }
+  }
+  if (action.type === TOGGLE_JOB_SEARCH_FORM) {
+    return { ...state, showJobSearchForm: !state.showJobSearchForm }
   }
   if (action.type === DISPLAY_ALERT) {
     return {
@@ -49,6 +53,7 @@ const reducer = (state, action) => {
       alertType: 'danger',
     }
   }
+
   return state
 }
 

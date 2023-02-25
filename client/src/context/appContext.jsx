@@ -9,6 +9,7 @@ import {
   FETCH_JOBS_ERROR,
   FETCH_JOBS_SUCCESS,
   TOGGLE_DARK_MODE,
+  TOGGLE_JOB_SEARCH_FORM,
 } from './action'
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   darkMode: false,
   showSidebar: false,
   showAlert: false,
+  showJobSearchForm: true,
   alertType: '',
   alertText: '',
   jobs: [],
@@ -39,14 +41,21 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_DARK_MODE })
   }
 
-  const fetchJobs = async () => {
+  const toggleJobSearchForm = () => {
+    dispatch({ type: TOGGLE_JOB_SEARCH_FORM })
+  }
+
+  const fetchJobs = async (queries) => {
     dispatch({ type: FETCH_JOBS_BEGIN })
     try {
       const response = await fetch('/api/v1/jobs')
+
+      if (!response.ok) throw new Error('Please provide a job title or keyword')
+
       const data = await response.json()
       dispatch({ type: FETCH_JOBS_SUCCESS, payload: data.jobs })
+      toggleJobSearchForm()
     } catch (error) {
-      console.log(error)
       dispatch({ type: FETCH_JOBS_ERROR, payload: error.message })
     }
     clearAlert()
@@ -54,7 +63,13 @@ const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ ...state, toggleDarkMode, fetchJobs, displayAlert }}
+      value={{
+        ...state,
+        toggleDarkMode,
+        fetchJobs,
+        displayAlert,
+        toggleJobSearchForm,
+      }}
     >
       {children}
     </AppContext.Provider>

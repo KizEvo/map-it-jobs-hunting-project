@@ -27,6 +27,10 @@
     @apply border border-slate-300 bg-white text-slate-900 dark:bg-slate-800 dark:text-white dark:border-slate-800;
   }
 
+  .form__job-search {
+    @apply rounded-md py-2 px-4 hover:ring-1 ring-slate-300 dark:hover:ring-0 focus:outline-none sm:text-sm dark:hover:bg-slate-700;
+  }
+
   .btn-primary {
     @apply p-2 rounded-md hover:bg-green-primary-dark bg-green-primary text-white drop-shadow-lg;
   }
@@ -40,7 +44,7 @@
   .scrollbar::-webkit-scrollbar-track {
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    background: #e7ffc9;
+    background: #c5ccbe3b;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
