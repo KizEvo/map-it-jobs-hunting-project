@@ -15,7 +15,7 @@ module.exports = {
         left: 'left',
       },
       height: {
-        'custom-jobs-details': '30rem',
+        'custom-jobs-details': '42rem',
       },
       width: {
         'custom-sidebar': '30rem',

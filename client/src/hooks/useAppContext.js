@@ -5,13 +5,21 @@ const AppContext = createContext({
   darkMode: false,
   showSidebar: false,
   showAlert: false,
-  showJobSearchForm: true,
   alertType: '',
   alertText: '',
+  totalPages: 0,
+  currentPage: 1,
   jobs: [],
+  queries: {
+    title: '',
+    location: '',
+    companyBusiness: '',
+    datePosted: '',
+    page: '',
+  },
   toggleDarkMode: () => {},
-  toggleJobSearchForm: () => {},
   fetchJobs: async () => {},
+  paginationJobs: async () => {},
   displayAlert: () => {},
 })
 

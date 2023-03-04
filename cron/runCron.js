@@ -3,7 +3,7 @@ import { runCron } from '../controllers/jobController.js'
 
 cron.schedule('0 */25 * * * *', () => {
   console.log('Running cron')
-  runCron()
+  // runCron()
 })
 
 // 0 */20 * * * * - every 20 mins

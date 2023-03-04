@@ -24,7 +24,11 @@
 
 # - Assign the returned link to companyLogo property and save to database
 
-- Test Error-handling while scraping company logo image in scrape_function.
+# - Test Error-handling while scraping company logo image in scrape_function.
+
+# - Add JobSearchForm component to the same section as JobContainer component in Sidebar component
+
+# - Put JobContainer, PaginationBtn to new component to seperate from Breadcrumb and JobSearchForm component.
 
 - Make a simple card for jobs when searching for jobs
 

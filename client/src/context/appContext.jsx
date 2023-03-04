@@ -8,8 +8,10 @@ import {
   FETCH_JOBS_BEGIN,
   FETCH_JOBS_ERROR,
   FETCH_JOBS_SUCCESS,
+  PAGINATION_JOBS_BEGIN,
+  PAGINATION_JOBS_ERROR,
+  PAGINATION_JOBS_SUCCESS,
   TOGGLE_DARK_MODE,
-  TOGGLE_JOB_SEARCH_FORM,
 } from './action'
 
 const initialState = {
@@ -17,10 +19,18 @@ const initialState = {
   darkMode: false,
   showSidebar: false,
   showAlert: false,
-  showJobSearchForm: true,
   alertType: '',
   alertText: '',
   jobs: [],
+  totalPages: 0,
+  currentPage: 1,
+  queries: {
+    title: '',
+    location: '',
+    companyBusiness: '',
+    datePosted: '',
+    page: '',
+  },
 }
 
 const AppProvider = ({ children }) => {
@@ -41,22 +51,45 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_DARK_MODE })
   }
 
-  const toggleJobSearchForm = () => {
-    dispatch({ type: TOGGLE_JOB_SEARCH_FORM })
-  }
-
   const fetchJobs = async (queries) => {
     dispatch({ type: FETCH_JOBS_BEGIN })
     try {
-      const response = await fetch('/api/v1/jobs')
+      const response = await fetch(
+        `/api/v1/jobs?location=${queries.location}&datePosted=${queries.datePosted}&companyBusiness=${queries.companyBusiness}&title=${queries.title}`
+      )
 
-      if (!response.ok) throw new Error('Please provide a job title or keyword')
+      if (!response.ok)
+        throw new Error('Something went wrong, please try again')
 
       const data = await response.json()
-      dispatch({ type: FETCH_JOBS_SUCCESS, payload: data.jobs })
-      toggleJobSearchForm()
+      dispatch({
+        type: FETCH_JOBS_SUCCESS,
+        payload: { jobs: data.jobs, totalPages: data.totalPages, queries },
+      })
     } catch (error) {
       dispatch({ type: FETCH_JOBS_ERROR, payload: error.message })
+    }
+    clearAlert()
+  }
+
+  const paginationJobs = async (page) => {
+    dispatch({ type: PAGINATION_JOBS_BEGIN })
+    try {
+      const response = await fetch(
+        `/api/v1/jobs?location=${state.queries.location}&datePosted=${state.queries.datePosted}&companyBusiness=${state.queries.companyBusiness}&page=${page}&title=${state.queries.title}`
+      )
+
+      if (!response.ok)
+        throw new Error('Something went wrong, please try again')
+
+      const data = await response.json()
+
+      dispatch({
+        type: PAGINATION_JOBS_SUCCESS,
+        payload: { jobs: data.jobs, page },
+      })
+    } catch (error) {
+      dispatch({ type: PAGINATION_JOBS_ERROR, payload: error.message })
     }
     clearAlert()
   }
@@ -68,7 +101,7 @@ const AppProvider = ({ children }) => {
         toggleDarkMode,
         fetchJobs,
         displayAlert,
-        toggleJobSearchForm,
+        paginationJobs,
       }}
     >
       {children}

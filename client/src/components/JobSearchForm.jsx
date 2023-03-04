@@ -1,5 +1,5 @@
 import { useAppContext } from '../hooks/useAppContext'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Alert from './Alert'
 import JobSearchOption from './JobSearchOption'
 
@@ -9,7 +9,7 @@ const initialOptionState = {
   datePosted: '',
 }
 
-const JobSearchForm = () => {
+const JobSearchForm = (props) => {
   const { fetchJobs, displayAlert, showAlert, isLoading } = useAppContext()
   const [options, setOptions] = useState(initialOptionState)
   const inputRef = useRef()
@@ -20,7 +20,7 @@ const JobSearchForm = () => {
     const jobInput = inputRef.current.value
 
     if (jobInput.trim() === '') {
-      displayAlert('Input text must not be empty', 'danger')
+      displayAlert('Job title must not be empty', 'danger')
       return
     }
 
@@ -29,15 +29,32 @@ const JobSearchForm = () => {
       return
     }
 
-    fetchJobs()
+    const optionValues = Object.values(options)
+    const optionProperties = Object.keys(initialOptionState)
+
+    for (let i = 0; i < optionProperties.length; i++) {
+      if (optionValues[i].includes('All')) optionValues[i] = ''
+      if (optionValues[i] !== '')
+        optionValues[i] = optionValues[i].toLowerCase()
+    }
+
+    const queries = { ...initialOptionState }
+
+    let i = 0
+    for (const prop in queries) {
+      queries[prop] = optionValues[i]
+      i++
+    }
+
+    queries.title = jobInput
+
+    fetchJobs(queries)
+    props.addSectionHandler('Job Details')
   }
 
   const optionsHandler = (e) => {
-    const name = e.target.name
-    const value = e.target.value
-
     setOptions((prevState) => {
-      return { ...prevState, [name]: value }
+      return { ...prevState, [e.target.name]: e.target.value }
     })
   }
 
@@ -66,7 +83,7 @@ const JobSearchForm = () => {
           id='city-select-option'
           labelText='City'
           labelMutedText='Optional'
-          options={['All', 'HaNoi', 'HoChiMinh', 'DaNang', 'Others']}
+          options={['All', 'Ha Noi', 'Ho Chi Minh', 'Da Nang', 'Others']}
           value={options.location}
           name='location'
           handleChange={optionsHandler}
