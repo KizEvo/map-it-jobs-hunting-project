@@ -30,7 +30,11 @@
 
 # - Put JobContainer, PaginationBtn to new component to seperate from Breadcrumb and JobSearchForm component.
 
-- Make a simple card for jobs when searching for jobs
+# - Make a simple card for jobs when searching for jobs
+
+- Integrate Google Map API to client
+
+- Build custom Google Map Marker that show job details while hovering on it
 
 - Enable Billing for Google Map API when deploying for production
   - https://developers.google.com/maps/documentation/javascript/cloud-setup#console

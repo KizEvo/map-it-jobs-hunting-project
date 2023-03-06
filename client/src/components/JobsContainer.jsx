@@ -2,7 +2,17 @@ import { useAppContext } from '../hooks/useAppContext'
 import Job from './Job'
 
 const JobsContainer = () => {
-  const { jobs } = useAppContext()
+  const { jobs, isLoading } = useAppContext()
+
+  if (isLoading) {
+    return (
+      <div className='flex flex-col gap-4 justify-end items-center h-80'>
+        <h1 className='text-2xl animate-bounce text-black dark:text-white'>
+          Loading...
+        </h1>
+      </div>
+    )
+  }
 
   if (jobs.length <= 0) {
     return (

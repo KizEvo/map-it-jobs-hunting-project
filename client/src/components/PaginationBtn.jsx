@@ -1,7 +1,8 @@
 import { useAppContext } from '../hooks/useAppContext'
 
 const PaginationBtn = () => {
-  const { paginationJobs, currentPage, totalPages, jobs } = useAppContext()
+  const { paginationJobs, currentPage, totalPages, jobs, isLoading } =
+    useAppContext()
 
   const pageIncrementHandler = () => {
     let newPage = currentPage + 1
@@ -15,7 +16,7 @@ const PaginationBtn = () => {
     paginationJobs(newPage)
   }
 
-  if (jobs.length <= 0) {
+  if (jobs.length <= 0 || isLoading) {
     return
   }
 
