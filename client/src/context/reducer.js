@@ -41,6 +41,7 @@ const reducer = (state, action) => {
       alertText: 'Finished! New jobs are displayed on the map',
       alertType: 'success',
       totalPages: action.payload.totalPages,
+      currentPage: 1,
       jobs: [...action.payload.jobs],
       queries: {
         ...state.queries,

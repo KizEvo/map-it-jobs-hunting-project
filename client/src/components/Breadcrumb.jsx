@@ -13,7 +13,7 @@ const Breadcrumb = (props) => {
   }
 
   return (
-    <div className='flex justify-start items-center gap-2 font-bold text-lg dark:text-white text-black'>
+    <div className='flex flex-wrap justify-start items-center gap-2 font-bold text-lg dark:text-white text-black'>
       {!props.isRootSection &&
         props.sections.map((breadcrumb, index) => {
           const oddBreadcrumb = (index + 1) % 2 !== 0
