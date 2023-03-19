@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAppContext } from './hooks/useAppContext'
 import DarkMode from './components/DarkMode'
 import Sidebar from './components/Sidebar'
+import Map from './components/Map'
 
 let initialVisit = true
 
@@ -21,9 +22,9 @@ function App() {
       }`}
     >
       <button
-        className={`fixed top-1/2 left-6 sm:block hidden animate-pulse hover:animate-none ${
-          showSidebar ? 'sm:hidden' : ''
-        }`}
+        className={`z-10 fixed top-1/2 left-6 sm:block hidden ${
+          initialVisit ? 'animate-pulse hover:animate-none' : ''
+        } ${showSidebar ? 'sm:hidden' : ''}`}
         onClick={sidebarHandler}
       >
         <div className='flex flex-row items-center gap-5'>
@@ -35,7 +36,7 @@ function App() {
             />
           </div>
           <p
-            className={`dark:text-white text-black ${
+            className={`dark:text-black dark:bg-white text-white bg-slate-700 p-2 rounded-md ${
               initialVisit ? '' : 'hidden'
             }`}
           >
@@ -44,12 +45,12 @@ function App() {
         </div>
       </button>
       <div
-        className={`flex justify-around sm:hidden dark:bg-gray-900 w-full h-14 dark:border-green-primary-dark border-t-2 border-slate-300 ${
+        className={`z-10 absolute flex justify-around sm:hidden dark:bg-gray-900 bg-amber-50 w-full h-14 dark:border-green-primary-dark border-t-2 border-green-primary ${
           showSidebar ? 'hidden' : ''
         }`}
       >
         <button
-          className='w-full h-full flex justify-center items-center dark:hover:bg-slate-700 hover:bg-slate-200'
+          className='w-full h-full flex justify-center items-center dark:hover:bg-slate-700 hover:bg-slate-300'
           onClick={sidebarHandler}
         >
           <img
@@ -60,9 +61,10 @@ function App() {
         </button>
         <DarkMode />
       </div>
-      <div className='hidden sm:block'>
+      <div className='hidden sm:block z-10'>
         <DarkMode />
       </div>
+      <Map />
       <Sidebar showSidebar={showSidebar} sidebarHandler={sidebarHandler} />
     </section>
   )

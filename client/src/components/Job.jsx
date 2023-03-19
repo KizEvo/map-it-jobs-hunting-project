@@ -9,7 +9,9 @@ const Job = (props) => {
           alt={`${props.company}-logo`}
           className='dark:bg-white p-1'
         />
-        <p className='font-extrabold overflow-hidden'>{props.title}</p>
+        <p className='font-extrabold overflow-hidden text-ellipsis'>
+          {props.title}
+        </p>
       </div>
       {isJobBenefits && (
         <ul>
@@ -17,7 +19,7 @@ const Job = (props) => {
             return (
               <li
                 key={index}
-                className='overflow-clip dark:text-slate-400 text-sm font-semibold'
+                className='text-ellipsis overflow-hidden dark:text-slate-400 text-sm font-semibold'
               >
                 . {benefit}
               </li>

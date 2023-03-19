@@ -5,12 +5,16 @@ const PaginationBtn = () => {
     useAppContext()
 
   const pageIncrementHandler = () => {
+    if (currentPage && totalPages === 1) return
+
     let newPage = currentPage + 1
     if (newPage > totalPages) newPage = 1
     paginationJobs(newPage)
   }
 
   const pageDecrementHandler = () => {
+    if (currentPage && totalPages === 1) return
+
     let newPage = currentPage - 1
     if (newPage <= 0) newPage = totalPages
     paginationJobs(newPage)

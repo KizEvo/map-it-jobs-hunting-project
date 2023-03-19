@@ -18,9 +18,9 @@ const AppContext = createContext({
     page: '',
   },
   toggleDarkMode: () => {},
+  displayAlert: () => {},
   fetchJobs: async () => {},
   paginationJobs: async () => {},
-  displayAlert: () => {},
 })
 
 const useAppContext = () => {

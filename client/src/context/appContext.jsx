@@ -1,5 +1,6 @@
 import { useReducer } from 'react'
 import { AppContext } from '../hooks/useAppContext'
+import { jobsApi } from '../utils/jobsApi'
 import reducer from './reducer'
 
 import {
@@ -54,12 +55,11 @@ const AppProvider = ({ children }) => {
   const fetchJobs = async (queries) => {
     dispatch({ type: FETCH_JOBS_BEGIN })
     try {
-      const response = await fetch(
-        `/api/v1/jobs?location=${queries.location}&datePosted=${queries.datePosted}&companyBusiness=${queries.companyBusiness}&title=${queries.title}`
-      )
+      const queriesString = jobsApi(queries, false)
+      const response = await fetch(queriesString)
 
       if (!response.ok)
-        throw new Error('Something went wrong, please try again')
+        throw new Error('Could not fetch job details, please try again')
 
       const data = await response.json()
       dispatch({
@@ -75,12 +75,18 @@ const AppProvider = ({ children }) => {
   const paginationJobs = async (page) => {
     dispatch({ type: PAGINATION_JOBS_BEGIN })
     try {
-      const response = await fetch(
-        `/api/v1/jobs?location=${state.queries.location}&datePosted=${state.queries.datePosted}&companyBusiness=${state.queries.companyBusiness}&page=${page}&title=${state.queries.title}`
-      )
+      const queries = {
+        location: state.queries.location,
+        datePosted: state.queries.datePosted,
+        companyBusiness: state.queries.companyBusiness,
+        page: page,
+        title: state.queries.title,
+      }
+      const queriesString = jobsApi(queries, true)
 
-      if (!response.ok)
-        throw new Error('Something went wrong, please try again')
+      const response = await fetch(queriesString)
+
+      if (!response.ok) throw new Error('Pagination error, please try again')
 
       const data = await response.json()
 
