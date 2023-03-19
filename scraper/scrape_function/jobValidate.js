@@ -1,5 +1,5 @@
+import { uploadImage } from '../../utils/cloudinary.js'
 import Job from '../../models/Job.js'
-import uploadImage from '../../utils/uploadImage.js'
 
 const jobValidate = async (jobInfo) => {
   try {
@@ -14,7 +14,10 @@ const jobValidate = async (jobInfo) => {
       return [jobInfo, undefined]
     }
 
-    const [imageProps, cloudErrMsg] = await uploadImage(jobInfo.companyLogo)
+    const [imageProps, cloudErrMsg] = await uploadImage(
+      jobInfo.companyLogo,
+      jobInfo.company
+    )
 
     if (!imageProps) throw new Error(cloudErrMsg)
 
@@ -44,4 +47,4 @@ const checkForCompanyInDb = async (job) => {
   return false
 }
 
-export { jobValidate }
+export { jobValidate, checkForCompanyInDb }

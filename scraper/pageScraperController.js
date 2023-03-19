@@ -1,8 +1,10 @@
+import { saveNewJobs } from '../controllers/jobController.js'
+import { deleteCloudinaryAssets } from '../utils/cloudinary.js'
+import getJobsGeometry from '../utils/mapApi.js'
 import getAllJobsInfo from './scrape_function/scrapeJobInfo.js'
 import scrapeJobUrls from './scrape_function/scrapeJobUrls.js'
 
 const pageScraperController = async (browser) => {
-  const jobStack = []
   try {
     console.log('Opening browser...')
     const page = await browser.newPage()
@@ -38,7 +40,22 @@ const pageScraperController = async (browser) => {
       const jobUrls = await scrapeJobUrls(page)
       const [jobData, isJobInDb] = await getAllJobsInfo(jobUrls, browser)
 
-      jobStack.push(jobData)
+      if (jobData.length <= 0) throw new Error('No new job to scrape')
+
+      const [newJobData, errorFlagJobsGeometry] = await getJobsGeometry(jobData)
+      if (errorFlagJobsGeometry) {
+        const errorFlagDeleteAssets = await deleteCloudinaryAssets(newJobData)
+
+        const errorMsg = errorFlagDeleteAssets
+          ? 'Cannot delete cloudinary assets'
+          : 'Cannot fetch jobs Geometry'
+
+        throw new Error(errorMsg)
+      }
+
+      const errorFlagDb = await saveNewJobs(newJobData)
+      if (errorFlagDb)
+        throw new Error('Something went wrong, cannot save jobs to database')
 
       if (isJobInDb) break
     }
@@ -47,7 +64,6 @@ const pageScraperController = async (browser) => {
   } finally {
     console.log('Finished, closing browser...')
     await browser.close()
-    return jobStack
   }
 }
 

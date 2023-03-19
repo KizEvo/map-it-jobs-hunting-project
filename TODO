@@ -32,9 +32,19 @@
 
 # - Make a simple card for jobs when searching for jobs
 
-- Integrate Google Map API to client
+# - Integrate Google Map API to client
 
-- Build custom Google Map Marker that show job details while hovering on it
+# - Fetch job geometries in nodejs runtime (backend) with node-fetch module.
+
+# - Handle error while fetching for job geometries.
+
+# - Delete cloudinary assets if failed to fetch geometry
+
+# - Error handling deleteCloudinaryAssets
+
+- Search for a location in Map API.
+
+- Build custom Google Map Marker that show job details while hovering on it.
 
 - Enable Billing for Google Map API when deploying for production
   - https://developers.google.com/maps/documentation/javascript/cloud-setup#console

@@ -39,6 +39,10 @@ const JobSchema = new Schema(
       type: Date,
       required: true,
     },
+    geometry: {
+      type: Object,
+      required: true,
+    },
   },
   { timestamps: true }
 )

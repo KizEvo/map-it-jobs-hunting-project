@@ -40,23 +40,21 @@ const getAllJob = async (req, res) => {
 
 const runCron = async () => {
   const browserInstance = await startBrowser()
-  const data = await startPageScrape(browserInstance)
-
-  if (data.length === 1 && data[0].length === 0) {
-    console.log('No new job yet.')
-  } else {
-    saveNewJobs(data)
-  }
+  await startPageScrape(browserInstance)
 }
 
 const saveNewJobs = async (data) => {
+  let isError = false
   try {
     for (let i = 0; i < data.length; i++) {
       await Job.create(data[i])
     }
   } catch (error) {
-    console.log(error.message)
+    console.log(error)
+    isError = true
+    return isError
   }
+  return isError
 }
 
-export { getAllJob, runCron }
+export { getAllJob, runCron, saveNewJobs }
