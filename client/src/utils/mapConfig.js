@@ -168,4 +168,6 @@ const center = {
   lng: 106.629,
 }
 
-export { nightMode, dayMode, center }
+const zoom = 10
+
+export { nightMode, dayMode, center, zoom }

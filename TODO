@@ -42,9 +42,9 @@
 
 # - Error handling deleteCloudinaryAssets
 
-- Search for a location in Map API.
+# - Build custom Google Map Marker that show job details while hovering on it.
 
-- Build custom Google Map Marker that show job details while hovering on it.
+- Style custom Google Map Marker
 
 - Enable Billing for Google Map API when deploying for production
   - https://developers.google.com/maps/documentation/javascript/cloud-setup#console

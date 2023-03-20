@@ -1,9 +1,11 @@
 import { useAppContext } from '../hooks/useAppContext'
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api'
-import { nightMode, dayMode, center } from '../utils/mapConfig'
+import { GoogleMap, useLoadScript } from '@react-google-maps/api'
+import { nightMode, dayMode, center, zoom } from '../utils/mapConfig'
+import React from 'react'
+import CustomMarker from './CustomMarker'
 
 const Map = () => {
-  const { darkMode } = useAppContext()
+  const { darkMode, jobs } = useAppContext()
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   })
@@ -14,16 +16,19 @@ const Map = () => {
     <GoogleMap
       mapContainerClassName='w-full h-full z-0'
       center={center}
-      zoom={10}
+      zoom={zoom}
       options={{
         disableDefaultUI: true,
         styles: darkMode ? nightMode : dayMode,
       }}
     >
-      <Marker
-        position={{ lat: 10.7895223, lng: 106.6876004 }}
-        title={'Hello world'}
-      />
+      {jobs.map((job) => {
+        return (
+          <React.Fragment key={job._id}>
+            <CustomMarker {...job} />
+          </React.Fragment>
+        )
+      })}
     </GoogleMap>
   )
 }
